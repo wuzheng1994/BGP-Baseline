@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgres
+{{ include "artemis.labels" . | indent 4 }}
+  name: postgres
+{{- with .Values.services.postgres }}
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: {{ .image }}
+        env:
+        - name: DB_AUTOCLEAN
+          valueFrom:
+            configMapKeyRef:
+              name: configmap
+              key: dbAutoClean
+        - name: DB_BACKUP
+          valueFrom:
+            configMapKeyRef:
+              name: configmap
+              key: dbBackup
+        - name: DB_HIJACK_DORMANT
+          valueFrom:
+            configMapKeyRef:
+              name: configmap
+              key: dbHijackDormant
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: configmap
+              key: dbName
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: dbPass
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: configmap
+              key: dbUser
+        command:
+        - ./postgres-entrypoint.sh
+        volumeMounts:
+        - mountPath: /postgres-entrypoint.sh
+          name: postgres-configmap0
+          subPath: postgres-entrypoint.sh
+        - mountPath: /docker-entrypoint-initdb.d/zinit.sql
+          name: postgres-configmap1
+          subPath: init.sql
+        - mountPath: /docker-entrypoint-initdb.d/data/
+          name: postgres-configmap2
+        - mountPath: /docker-entrypoint-initdb.d/libs/rabbitmq/
+          name: postgres-configmap3
+        - mountPath: /var/lib/postgresql/data/
+          name: postgres-pvc
+          subPath: postgres-data
+        - mountPath: /tmp/
+          name: postgres-pvc
+          subPath: postgres-backup
+      restartPolicy: Always
+      volumes:
+      - configMap:
+          name: volumes
+          defaultMode: 0777
+        name: postgres-configmap0
+      - configMap:
+          name: volumes
+        name: postgres-configmap1
+      - configMap:
+          name: volumes
+          items:
+          - key: restore.sql
+            path: restore.sql
+          - key: tables.sql
+            path: tables.sql
+        name: postgres-configmap2
+      - configMap:
+          name: volumes
+          items:
+          - key: schema.sql
+            path: schema.sql
+        name: postgres-configmap3
+      - persistentVolumeClaim:
+          claimName: postgres-pvc
+        name: postgres-pvc
+      {{- with $.Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | nindent 8 }}
+      {{- end }}
+  {{- end }}

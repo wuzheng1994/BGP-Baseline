@@ -1,0 +1,59 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: frontend-ingress
+  annotations:
+  {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- range $key, $value := .Values.ingress.frontend.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  labels:
+{{ include "artemis.labels" . | indent 4 }}
+spec:
+  {{- if .Values.ingress.tlsEnabled }}
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host | default "artemis.com" }}
+    secretName: secret-tls
+  {{- end }}
+  rules:
+  - host: {{ .Values.ingress.host | default "artemis.com" }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.webappHost }}
+          servicePort: {{ .Values.webappPort }}
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: graphql-ingress
+  annotations:
+  {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- range $key, $value := .Values.ingress.graphql.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  labels:
+{{ include "artemis.labels" . | indent 4 }}
+spec:
+  {{- if .Values.ingress.tlsEnabled }}
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host | default "artemis.com" }}
+    secretName: secret-tls
+  {{- end }}
+  rules:
+  - host: {{ .Values.ingress.host | default "artemis.com" }}
+    http:
+      paths:
+      - path: /api/graphql
+        backend:
+          serviceName: {{ .Values.hasuraHost }}
+          servicePort: {{ .Values.hasuraPort }}
+{{- end -}}
