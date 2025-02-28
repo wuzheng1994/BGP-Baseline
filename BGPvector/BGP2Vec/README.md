@@ -59,6 +59,17 @@ In this paper, we extend the work done in BGP2Vec and introduce a novel approach
 # 说明
 
 * 项目原地址为https://github.com/talshapira/BGP2Vec
+
 * BGP2Vec模型可通过train_test.py中方法生成
+
 * 生成数据集方法可行，直接运行
-* 训练神经网络方法暂不可行，可能存在以下问题：1.依赖包坏境问题 ；2.数据源或生成模型问题；3.存在未定义的函数
+
+* 目前存在以下问题（CAIDA....ipynb）：
+
+  1.word2vec模型中ASN与数据集不匹配，word2vec中没有ASN23815，可能需要后期比较数据
+
+  2.训练代码中的label值设为{0,1,2}，但数据集生成label值为{0,1,3}
+
+  3.神经网络可视化问题，绘图失败，graphviz包安装无效
+
+  4.存在未定义的函数dataset_idx2asn_and_labels
