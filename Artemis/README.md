@@ -203,4 +203,4 @@ microk8s.helm3 install -f values.yaml -f example-values.yaml artemis artemis/art
 
 **Note: We highly recommend going through the detailed docs instructions before using ARTEMIS for the first time.**
 
-**Note:The source github code address is in [this docs section](https://github.com/FORTH-ICS-INSPIRE/artemis).Please see the source code URL for details.
+**Note:The source github code address is in [this section](https://github.com/FORTH-ICS-INSPIRE/artemis).Please see the source code URL for details.**
