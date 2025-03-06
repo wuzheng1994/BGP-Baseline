@@ -55,21 +55,3 @@ AP2Vec: an Unsupervised Approach for BGP Hijacking Detection
 In this paper, we extend the work done in BGP2Vec and introduce a novel approach for BGP hijacking detection that is based on the observation that during a hijack attack, the functional roles of ASNs along the route change. To identify a functional change, we build on previous work that embeds ASNs to vectors based on BGP routing announcements and embed each IP address prefix (AP) to a vector representing its latent characteristics, we call it AP2Vec. Then, we compare the embedding of a new route with the AP embedding that is based on the old routes to identify large differences.
 
 * T. Shapira and Y. Shavitt, "AP2Vec: an Unsupervised Approach for BGP Hijacking Detection," in IEEE Transactions on Network and Service Management, doi: 10.1109/TNSM.2022.3166450. [Download paper here](https://ieeexplore.ieee.org/document/9754706)
-
-# 说明
-
-* 项目原地址为https://github.com/talshapira/BGP2Vec
-
-* BGP2Vec模型可通过train_test.py中方法生成
-
-* 生成数据集方法可行，直接运行
-
-* 目前存在以下问题（CAIDA....ipynb）：
-
-  1.word2vec模型中ASN与数据集不匹配，word2vec中没有ASN23815，可能需要后期比较数据
-
-  2.训练代码中的label值设为{0,1,2}，但数据集生成label值为{0,1,3}
-
-  3.神经网络可视化问题，绘图失败，graphviz包安装无效
-
-  4.存在未定义的函数dataset_idx2asn_and_labels
