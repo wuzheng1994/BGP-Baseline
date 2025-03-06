@@ -79,7 +79,7 @@ def data_generator_wlabel(files, Period, start_time: str, end_time: str, anomaly
 # pri rib表
 # 测试数据
 files = [
-    '/home/skypapaya/code/BGP-Security/data/output/rib_table/route-views.amsix_rib.20211004.1600.txt']  # 使用包含BGP数据的文本文件路径
+    '/home/whm/Code/BGP-Security/code/BGP-Baseline/BGPviewer/data/rib/priming_data/txt/route-views.amsix/test.txt']  # 使用包含BGP数据的文本文件路径
 Period = 1  # 将窗口大小设置为1分钟
 start_time = '2021-10-04 00:00:00'  # 设置开始时间
 end_time = '2021-10-05 00:00:00'  # 设置结束时间

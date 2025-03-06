@@ -156,7 +156,7 @@ checkpoint_callback = ModelCheckpoint(
 )
 
 logger_ = logging.getLogger("pytorch_lightning")
-logger = pl.loggers.TensorBoardLogger(save_dir='/home/wuzheng/Packet/SimFingerPrint/Method_code/baseline/BGPviewer/', version='my_name9', name='lightning_logs')
+logger = pl.loggers.TensorBoardLogger(save_dir='/home/whm/Code/BGP-Security/code/BGP-Baseline', version='my_name9', name='lightning_logs')
 
 
 if __name__ == "__main__":
